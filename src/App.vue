@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <RegisterUser />
+    <LoginUser />
   </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import RegisterUser from "./components/RegisterUser.vue";
+import LoginUser from "./components/LoginUser.vue";
 
 export default defineComponent({
-  components: { RegisterUser },
+  components: { LoginUser },
 });
 </script>
 
