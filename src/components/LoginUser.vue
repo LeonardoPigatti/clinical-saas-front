@@ -25,6 +25,8 @@
 import { ref } from "vue";
 import { client } from "../apollo/client";
 import { gql } from "@apollo/client/core";
+import router from '../router';
+
 
 export default {
   setup() {
@@ -49,31 +51,24 @@ export default {
       }
     `;
 
-    const handleLogin = async () => {
+const handleLogin = async () => {
   try {
     const result = await client.mutate({
       mutation: LOGIN_USER,
-      variables: {
-        email: email.value,
-        password: password.value,
-      },
+      variables: { email: email.value, password: password.value },
     });
 
     const data = result.data.login;
 
-    // Salva token e usuário no localStorage
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
-    window.location.reload(); // recarrega a página para mostrar o Dashboard
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
 
-    successMessage.value = `Bem-vindo, ${data.user.name}!`;
-    errorMessage.value = "";
+    // Redireciona para dashboard
+    router.push('/dashboard');
 
-    email.value = "";
-    password.value = "";
   } catch (err) {
     errorMessage.value = err.message;
-    successMessage.value = "";
+    successMessage.value = '';
   }
 };
 
