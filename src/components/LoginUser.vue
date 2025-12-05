@@ -50,30 +50,33 @@ export default {
     `;
 
     const handleLogin = async () => {
-      try {
-        const result = await client.mutate({
-          mutation: LOGIN_USER,
-          variables: {
-            email: email.value,
-            password: password.value,
-          },
-        });
+  try {
+    const result = await client.mutate({
+      mutation: LOGIN_USER,
+      variables: {
+        email: email.value,
+        password: password.value,
+      },
+    });
 
-        const data = result.data.login;
+    const data = result.data.login;
 
-        // Salva token no localStorage (ou cookies)
-        localStorage.setItem("token", data.token);
+    // Salva token e usuário no localStorage
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    window.location.reload(); // recarrega a página para mostrar o Dashboard
 
-        successMessage.value = `Bem-vindo, ${data.user.name}!`;
-        errorMessage.value = "";
+    successMessage.value = `Bem-vindo, ${data.user.name}!`;
+    errorMessage.value = "";
 
-        email.value = "";
-        password.value = "";
-      } catch (err) {
-        errorMessage.value = err.message;
-        successMessage.value = "";
-      }
-    };
+    email.value = "";
+    password.value = "";
+  } catch (err) {
+    errorMessage.value = err.message;
+    successMessage.value = "";
+  }
+};
+
 
     return {
       email,
